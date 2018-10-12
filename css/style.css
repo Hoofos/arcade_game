@@ -1,0 +1,98 @@
+body {
+    background:#fff url('../images/background.jpg') no-repeat fixed center; 
+    color: #2E8B57;
+    font: bold 20px 'Abril Fatface', cursive;
+    letter-spacing: 3px;
+    margin: 0px;
+}
+
+h1 {
+    font-size: 16px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 12px;
+    margin-top:15px;
+}
+
+li {
+    margin: 5px 0px;
+}
+
+p {
+    margin: 10px 0px;
+    text-indent: 30px;
+}
+
+#divFechar {
+    margin: 30px 20px;
+    text-align: right;
+}
+
+#divFechar a {
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#divFechar a:hover {
+    color: red;
+}
+
+#divFundoPreto {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 5;
+    visibility: hidden;
+}
+
+#divGameName {
+    padding: 20px 0px 30px 0px;
+}
+
+#divMensagem {
+    position: absolute;
+    color: #fff;
+    width: 650px;
+    font: 11px 'Verdana';
+    line-height: 16px;
+    z-index: 10;
+    visibility: hidden;
+}
+
+#imgHelp {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+#divPontos {
+    position: absolute;
+    right: 0px;
+    font-size: 35px;
+    color: #2E8B57;
+    text-shadow: none;
+}
+
+#imgVidas {
+    position: absolute;
+    left: 0px;
+}
+
+.posicao {
+    position: relative;
+    margin: auto;
+    width: 505px;
+    height: auto;
+    text-align: center;
+}
+
+.gameOver {
+    font-size: 70px;
+}
+
