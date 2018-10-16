@@ -1,14 +1,15 @@
+"use strict";
+
 const divMensagem = document.getElementById("divMensagem");
 
 function showMessage(opMessage = '', titulo = '', width = 300) {
 
     const divFundo = document.getElementById("divFundoPreto");
-
+    let message = '';
     let visibility = 'visible';
 
     switch(opMessage) {
         case '':
-            message = '';
             visibility = 'hidden';
 
             break;
@@ -84,7 +85,6 @@ function showMessage(opMessage = '', titulo = '', width = 300) {
             break;
 
         default:
-            message = '';
             visibility = 'hidden';
     }
 
@@ -109,6 +109,8 @@ function posicionaMensagem() {
 
     const width = window.innerWidth;
     const height = window.innerHeight;
+    let posX = 0, 
+        posY = 0;
 
     posX = (width - divMensagem.offsetWidth)/2;
 

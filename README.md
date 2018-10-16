@@ -1,7 +1,4 @@
-# arcade_game
-Small project for Udacity course - create an arcade game using OO Javascript.
-
-Udacity - Nanodegree Web Front-End Avançado
+﻿Udacity - Nanodegree Web Front-End Avançado
 
 Classic Arcade Game Clone
 
@@ -35,5 +32,4 @@ RESUMO
 - Ao coletar um coração, uma vida é restaurada e o jogador ganha 150 pontos.
 - A coleta de corações sempre dará resulterá em pontos, mas nunca fará com que o jogador tenha mais do que 3 vidas.
 - Ao chegar em 3000 pontos, o jogo finaliza.
-
 

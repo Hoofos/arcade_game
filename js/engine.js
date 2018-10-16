@@ -1,3 +1,5 @@
+"use strict";
+
 /* Engine.js
  * Este arquivo mostra a funcionalidade do loop do jogo (render e entidades
  * de update), esboça o tabuleiro inicial do jogo na tela e, depois, chama
@@ -25,20 +27,16 @@ const Engine = (function(global) {
           win = global.window,
           canvas = doc.createElement('canvas'),
           ctx = canvas.getContext('2d');
+
+    const divContainer = doc.getElementById('divContainer'),
+          divIniciar = doc.getElementById('divIniciar'),
+          divPontos = doc.getElementById('divPontos');
     
     let lastTime;
-    let Yay = false;    // Define quando nosso herói chegou com sucesso até a água
     
-    divContainer = doc.getElementById('divContainer');
-    divIniciar = doc.getElementById('divIniciar');
-    divPontos = doc.getElementById('divPontos');
-
-    // Controle do Status do jogo
-    isStarted = false;
 
     // Controle de Vidas <
-    maxVidas = 3;
-    imgVidas = doc.getElementById('imgVidas');
+    const imgVidas = doc.getElementById('imgVidas');
     // Controle de Vidas >
 
     canvas.width = 505;

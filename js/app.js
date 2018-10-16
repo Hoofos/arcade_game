@@ -1,13 +1,34 @@
+"use strict";
+
+// ########## SUPERCLASSE <
+//
+const Elementos = function(x, y, h, w, s) {
+    this.x = x;
+    this.y = y;
+    this.height = h;
+    this.width = w;
+    this.sprite = s;
+}
+//
+// ########## SUPERCLASSE >
+
+
+// ########## JOGO <
+//
+// Configurações e Status do jogo
+const Game = function() {
+    this.isStarted = false;     // Indica se o jogo está iniciado ou não
+    this.maxVidas = 3;          // Define o número máximo de vidas
+};
+//
+// ########## JOGO >
+
+
 // ########## CORAÇÃO <
 //
 // Coração que fornece uma vida ao jogador e mais 150 pontos
-const Heart = function(x, y) {
-    this.x = x;
-    this.y = y;
-    this.height = 80;
-    this.width = 101;
-
-    this.sprite = 'images/heart.png';
+const Heart = function() {
+    Elementos.call(this, 0, 0, 80, 101, 'images/heart.png') // herda as propriedades da superclasse
 };
 
 Heart.prototype.reset = function() {
@@ -16,7 +37,7 @@ Heart.prototype.reset = function() {
 };
 
 Heart.prototype.render = function() {
-    if (isStarted) ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    if (jogo.isStarted) ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 //
 // ########## CORAÇÃO >
@@ -32,9 +53,7 @@ const Enemy = function() {
     // A imagem/sprite de nossos inimigos, isso usa um
     // ajudante que é fornecido para carregar imagens
     // com facilidade.
-    this.sprite = 'images/enemy-bug.png';
-    this.height = 83;
-    this.width = 101;
+    Elementos.call(this, 0, 0, 83, 101, 'images/enemy-bug.png') // herda as propriedades da superclasse
 
     // Posição inicial dos inimigos
     this.x = -this.width;
@@ -65,7 +84,7 @@ Enemy.prototype.update = function(dt) {
 
 // Desenhe o inimigo na tela, método exigido pelo jogo
 Enemy.prototype.render = function() {
-    if (isStarted) ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    if (jogo.isStarted) ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Agora, escreva sua própria classe de jogador
@@ -78,11 +97,9 @@ Enemy.prototype.render = function() {
 // ########## JOGADOR <
 //
 const Player = function() {
-	this.sprite = 'images/char-boy.png';
-	this.height = 76;
-    this.width = 101;
-	this.reset();
+    Elementos.call(this, 0, 0, 76, 101, 'images/char-boy.png') // herda as propriedades da superclasse
     this.speed = 1;
+    this.Yay = false;   // Define quando nosso herói chegou com sucesso até a água
 };
 
 // Marca os pontos do nosso herói
@@ -93,7 +110,7 @@ Player.prototype.pontos = (() => {
         divPontos.innerHTML = pontos;
 
         if (pontos >= 3000) { // Objetivo !!! Fim do jogo...
-            isStarted = false; // Para o jogo
+            jogo.isStarted = false; // Para o jogo
             divIniciar.innerHTML = "* APERTE ENTER PARA INICIAR *";
             showMessage('win', '* THE END DNE EHT *');
             resetAll();
@@ -103,10 +120,10 @@ Player.prototype.pontos = (() => {
 
 // Registra as vidas do nosso herói
 Player.prototype.vidas = (() => {
-    let vidas = maxVidas;
+    let vidas = 0;
     return (opVida) => { // opVida = [#, +, -]
-        vidas = (opVida === '#') ? vidas = maxVidas : (opVida === '-') ? vidas -= 1 : (vidas === maxVidas) ? maxVidas : vidas += 1;
-        
+        vidas = (opVida === '#') ? vidas = jogo.maxVidas : (opVida === '-') ? vidas -= 1 : (vidas === jogo.maxVidas) ? jogo.maxVidas : vidas += 1;
+
         imgVidas.src = `images/${vidas}_vidas.png`;
         
         if (vidas === 0) gameOver();
@@ -116,12 +133,12 @@ Player.prototype.vidas = (() => {
 Player.prototype.reset = function() {	
 	this.x = 202;   //segunda coluna
     this.y = 405;   //sexta linha
-    Yay = false;    //começamos uma nova tentativa para chegar na água
+    this.Yay = false;    //começamos uma nova tentativa para chegar na água
 };
 
 Player.prototype.update = function() {
-    if ((this.y == -10) && (!Yay)) { // Herói conseguiu chegar na água
-        Yay = true;
+    if ((this.y == -10) && (!this.Yay)) { // Herói conseguiu chegar na água
+        this.Yay = true;
         heart.reset(); // Desenhamos um novo coração
         window.setTimeout(() => { this.pontos(100); this.reset(); }, 300);
     }
@@ -130,13 +147,13 @@ Player.prototype.update = function() {
     if ( (Math.abs((this.x + this.width) - (heart.x + heart.width)) < 90) && (Math.abs((this.y + this.height) - (heart.y + heart.height)) < 50) ) {
         heart.x = -101; // Posicionamos o coração fora do Canvas até a próxima rodada
         heart.y = 0;
-        jogador.vidas('+');
-        jogador.pontos(150);
+        this.vidas('+');
+        this.pontos(150);
     }
 }
 
 Player.prototype.render = function() {
-    if (isStarted) ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    if (jogo.isStarted) ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 Player.prototype.handleInput = function(comando) {
@@ -145,8 +162,8 @@ Player.prototype.handleInput = function(comando) {
     const yMov = 83;        // Tamanho do movimento no eixo y
     const xMov = 101;       // Tamanho do movimento no eixo x
 
-    if(!isStarted && comando === 'enter') {
-        isStarted = true;
+    if(!jogo.isStarted && comando === 'enter') {
+        jogo.isStarted = true;
         showMessage();
         divIniciar.innerHTML = "";
         resetAll();
@@ -199,8 +216,9 @@ Player.prototype.handleInput = function(comando) {
 // Represente seus objetos como instâncias.
 // Coloque todos os objetos inimgos numa array allEnemies
 // Coloque o objeto do jogador numa variável chamada jogador.
-
+const jogo = new Game;
 const jogador = new Player;
+jogador.vidas('#');
 const allEnemies = [];
 const heart = new Heart(0, 0);
 heart.reset();
@@ -216,7 +234,7 @@ function resetAll() {
 }
 
 function gameOver() {
-    isStarted = false; // Para o jogo
+    jogo.isStarted = false; // Para o jogo
 
     showMessage('gameover', '* GAME OVER *');
 
